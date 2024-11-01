@@ -1,0 +1,71 @@
+Name: Core
+Host: 0.0.0.0
+Port: 8001
+
+Auth:
+  AccessSecret: d1234567890
+  AccessExpire: 7200000
+
+CoreRpcConf:
+  Target: 0.0.0.0:7001
+  Enabled: true
+
+Log:
+  ServiceName: CoreApiLogger
+#  Mode: file
+#  Path: /home/data/logs/Core/api
+  Encoding: plain
+  Level: info
+  Compress: false
+  KeepDays: 7
+  StackCoolDownMillis: 100
+
+Captcha:
+  KeyLong: 5
+  ImgWidth: 240
+  ImgHeight: 80
+  Driver: digit
+
+Prometheus:
+  Host: 0.0.0.0
+  Port: 4000
+  Path: /metrics
+
+DatabaseConf:
+  Type: mysql
+  Host: 101.43.41.211
+  Port: 3306
+  DBName: fox_admin_test2
+  Username: root
+  Password: lwj@1993
+  MaxOpenConn: 100
+  SSLMode: disable
+  CacheTime: 5
+
+RedisConf:
+  Host: 101.43.41.211:6379
+  Pass: lwj@1993
+
+CasbinDatabaseConf:
+  Type: mysql
+  Host: 101.43.41.211
+  Port: 3306
+  DBName: fox_admin_test
+  Username: root
+  Password: lwj@1993
+  MaxOpenConn: 100
+  SSLMode: disable
+  CacheTime: 5
+
+CasbinConf:
+  ModelText: |
+    [request_definition]
+    r = sub, obj, act
+    [policy_definition]
+    p = sub, obj, act
+    [role_definition]
+    g = _, _
+    [policy_effect]
+    e = some(where (p.eft == allow))
+    [matchers]
+    m = r.sub == p.sub && keyMatch2(r.obj,p.obj) && r.act == p.act
